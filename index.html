@@ -716,7 +716,7 @@
         return 'http://localhost:3000';
       }
 
-      return window.location.origin || 'http://localhost:3000';
+      return `${window.location.origin}/optipack`;
     }
 
     function updateQrCode(foodName, productType, ph, humidity, bestMaterial) {
