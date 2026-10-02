@@ -529,7 +529,7 @@
       }
     ];
 
-    const API_BASE = 'http://localhost:8000';
+    const API_BASE = 'https://optipack.onrender.com';
 
     let foodProfiles = fallbackFoodProfiles;
     let materialCatalog = fallbackMaterials;
@@ -752,7 +752,7 @@
       const humidity = Number(values.humidity);
 
       try {
-        const response = await fetch('http://localhost:8000/recommend', {
+        const response = await fetch(`${API_BASE}/recommend`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ foodName, productType, temperature, ph, humidity })
