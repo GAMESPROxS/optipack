@@ -714,23 +714,24 @@
     function getAppBaseUrl() {
       if (window.location.protocol === 'file:') {
         return 'http://localhost:3000';
-      }
+    }
 
-      return `${window.location.origin}/optipack/`;
+      return `${window.location.origin}/optipack`;
     }
 
     function updateQrCode(foodName, productType, ph, humidity, bestMaterial) {
       const baseUrl = getAppBaseUrl();
-      const detailUrl = new URL('material-details.html', baseUrl);
-      detailUrl.searchParams.set('material', bestMaterial.name);
+      const detailUrl = `${baseUrl}/material-details.html?material=${encodeURIComponent(bestMaterial.name)}`;
       const qrCode = document.getElementById('qrCode');
-      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(detailUrl.toString())}`;
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(detailUrl)}`;
       const materialLink = document.getElementById('materialLink');
 
       qrCode.src = qrCodeUrl;
       qrCode.alt = `QR code for ${bestMaterial.name} detail sheet`;
-      document.getElementById('qrText').textContent = `Scan for packaging details: ${bestMaterial.name} for ${foodName}.`;
-      materialLink.href = detailUrl.toString();
+      document.getElementById('qrText').textContent =
+      `Scan for packaging details: ${bestMaterial.name} for ${foodName}.`;
+
+      materialLink.href = detailUrl;
       materialLink.textContent = `Open ${bestMaterial.name} details`;
     }
 
