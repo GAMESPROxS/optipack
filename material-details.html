@@ -250,8 +250,8 @@
       }
 
       try {
-        const baseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : window.location.origin;
-        const response = await fetch(`${baseUrl}/api/materials`);
+        const baseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : 'https://optipack.onrender.com';
+        const response = await fetch(`${baseUrl}/materials`);
         const items = await response.json();
         const selected = items.find((item) => item.name.toLowerCase() === material.toLowerCase()) || items[0];
 
