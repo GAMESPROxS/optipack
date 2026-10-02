@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Packaging material details</title>
+  <style>
+    :root {
+      --bg: #f5f7f2;
+      --panel: #ffffff;
+      --line: #dfe7dc;
+      --text: #16362d;
+      --muted: #5d736a;
+      --green: #235845;
+      --green-2: #71b06a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .page {
+      max-width: 920px;
+      margin: 32px auto;
+      padding: 0 16px 40px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(20, 42, 34, 0.08);
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 12px;
+    }
+    .brand {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+    }
+    .brand span { color: var(--green-2); }
+    .link {
+      color: var(--green);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .badge {
+      min-width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(113, 176, 106, 0.12);
+      border: 2px solid rgba(35, 88, 69, 0.15);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--green);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.05em;
+    }
+    .muted {
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 22px;
+    }
+    .card {
+      background: #f8faf7;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 15px;
+      letter-spacing: -0.04em;
+    }
+    .feature-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 8px;
+    }
+    .feature-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--text);
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 6px;
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list strong { font-size: 12px; }
+    .note {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: rgba(35, 88, 69, 0.05);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 13px;
+    }
+    .info-block {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .info-box {
+      background: #f8faf7;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+    .info-box h4 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      letter-spacing: -0.03em;
+    }
+    .info-box p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="brand"><span>pack</span>wise</div>
+      <a class="link" href="index.html">Back to app</a>
+    </div>
+
+    <div class="panel">
+      <div class="hero">
+        <div>
+          <div class="muted">Packaging material details</div>
+          <h1 id="materialName">Material</h1>
+          <div id="materialDescription" class="muted">Loading material information...</div>
+        </div>
+        <div id="materialBadge" class="badge">0</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Material profile</h3>
+          <ul id="materialProfile" class="feature-list"></ul>
+        </div>
+        <div class="card">
+          <h3>Packaging performance</h3>
+          <ul id="materialPerformance" class="feature-list"></ul>
+        </div>
+      </div>
+
+      <div id="materialNote" class="note"></div>
+
+      <div class="info-block">
+        <div class="info-box">
+          <h4>Handling guidance</h4>
+          <p id="handlingGuidance"></p>
+        </div>
+        <div class="info-box">
+          <h4>Supplier / usage note</h4>
+          <p id="supplierNote"></p>
+        </div>
+        <div class="info-box">
+          <h4>Sustainability</h4>
+          <p id="sustainabilityNote"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function getMaterialMeta(name) {
+      const materialData = {
+        'Breathable film': {
+          handling: 'Use with airflow control and avoid overstacking to reduce condensation. Ideal for fresh produce that needs ventilation.',
+          supplier: 'Commonly supplied as perforated film rolls for fresh-cut produce, berries, and leafy greens.',
+          sustainability: 'Low material mass and often recyclable under monomaterial film streams when collection infrastructure supports it.'
+        },
+        'PET tray + lidding': {
+          handling: 'Use rigid stack support and avoid sharp impact loads during transit. This material is ideal for chilled food protection.',
+          supplier: 'Widely available as thermoformed trays with matched lidding for ready-to-eat produce and chilled meals.',
+          sustainability: 'Recyclable where PET collection is established; check local recovery programs and tray-lidding compatibility.'
+        },
+        'Barrier laminate pouch': {
+          handling: 'Keep seals intact; avoid puncture points and sharp edges during storage and transport.',
+          supplier: 'Often used for nutrient-sensitive or oxygen-sensitive dry and snack products needing barrier protection.',
+          sustainability: 'Performance-focused structure may be harder to recycle; prefer mono-material or reusable options where feasible.'
+        },
+        'Micro-perforated PE': {
+          handling: 'Best used with stable temperature control and careful stacking to preserve gas exchange performance.',
+          supplier: 'Typical for fresh produce and short shelf-life vegetables requiring breathability.',
+          sustainability: 'Often easier to recycle than multi-layer films, especially in compatible collection systems.'
+        },
+        'Modified atmosphere tray': {
+          handling: 'Use with tight sealing and protected stacking to maintain freshness and shelf-life performance.',
+          supplier: 'Factory-sealed trays used for fresh produce, salad kits, and shelf-life extension packaging.',
+          sustainability: 'Can reduce food waste, but material recovery depends on the tray construction and local recycling access.'
+        },
+        'Paperboard carton': {
+          handling: 'Use internal padding and moisture barriers when product sensitivity or condensation is a concern.',
+          supplier: 'Popular for dry goods, bakery items, and boxed shipments where sturdiness and printability matter.',
+          sustainability: 'One of the strongest low-carbon choices when paired with recyclable board and minimal coatings.'
+        }
+      };
+
+      return materialData[name] || {
+        handling: 'Follow standard handling practice: protect the product from shock, moisture, and tight stacking during transit.',
+        supplier: 'Supplier details should be confirmed with the packaging buyer or materials catalog for the exact product line.',
+        sustainability: 'Sustainability depends on material stream, local recycling options, and product-specific packaging design.'
+      };
+    }
+
+    async function loadMaterial() {
+      const params = new URLSearchParams(window.location.search);
+      const material = params.get('material');
+      if (!material) {
+        document.getElementById('materialName').textContent = 'Material not found';
+        document.getElementById('materialDescription').textContent = 'No packaging material was supplied in the QR link.';
+        return;
+      }
+
+      try {
+        const baseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : window.location.origin;
+        const response = await fetch(`${baseUrl}/api/materials`);
+        const items = await response.json();
+        const selected = items.find((item) => item.name.toLowerCase() === material.toLowerCase()) || items[0];
+
+        if (!selected) {
+          document.getElementById('materialName').textContent = 'Material not found';
+          document.getElementById('materialDescription').textContent = 'This packaging material is not available in the saved database.';
+          return;
+        }
+
+        const materialMeta = getMaterialMeta(selected.name);
+        const scoring = Object.entries(selected.features || {});
+        const profile = [
+          ['Sustainability', scoring.find(([key]) => key === 'Sustainability/recyclability')?.[1] || 0],
+          ['Damage risk', scoring.find(([key]) => key === 'Estimated damage risk')?.[1] || 0],
+          ['Cost profile', scoring.find(([key]) => key === 'Packaging cost')?.[1] || 0],
+          ['Moisture handling', scoring.find(([key]) => key === 'Moisture sensitivity')?.[1] || 0]
+        ];
+
+        const performance = scoring.slice(0, 6).map(([key, value]) => [key, value]);
+
+        document.getElementById('materialName').textContent = selected.name;
+        document.getElementById('materialDescription').textContent = selected.details || 'No extra notes are available.';
+        document.getElementById('materialBadge').textContent = Math.round((profile.reduce((sum, [, value]) => sum + Number(value), 0) / profile.length) || 0);
+
+        document.getElementById('materialProfile').innerHTML = profile.map(([label, value]) => `
+          <li><strong>${label}</strong><span>${value}</span></li>
+        `).join('');
+
+        document.getElementById('materialPerformance').innerHTML = performance.map(([label, value]) => `
+          <li><strong>${label}</strong><span>${value}</span></li>
+        `).join('');
+
+        document.getElementById('handlingGuidance').textContent = materialMeta.handling;
+        document.getElementById('supplierNote').textContent = materialMeta.supplier;
+        document.getElementById('sustainabilityNote').textContent = materialMeta.sustainability;
+        document.getElementById('materialNote').textContent = `This material is recommended for products with moisture, cushioning, and transport conditions similar to the selected food profile. Keep handling, temperature, and box strength checks in mind when moving the product.`;
+      } catch (error) {
+        console.error(error);
+        document.getElementById('materialName').textContent = 'Unable to load material';
+        document.getElementById('materialDescription').textContent = 'The material detail page could not load the saved packaging data.';
+      }
+    }
+
+    loadMaterial();
+  </script>
+</body>
+</html>

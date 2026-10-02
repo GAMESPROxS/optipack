@@ -1,0 +1,275 @@
+[
+  {
+    "name": "Breathable film",
+    "score": 92,
+    "color": "#6dbd71",
+    "details": "Best for fresh produce and high humidity products.",
+    "features": {
+      "Product fragility": 86,
+      "Product dimensions": 80,
+      "Required cushioning": 75,
+      "Packaging material": 90,
+      "Box strength required": 62,
+      "Transportation risk": 70,
+      "Moisture sensitivity": 90,
+      "Temperature sensitivity": 82,
+      "Expected handling/shock": 68,
+      "Packaging cost": 78,
+      "Sustainability/recyclability": 77,
+      "Estimated damage risk": 76,
+      "Packaging dimensions": 83
+    }
+  },
+  {
+    "name": "PET tray + lidding",
+    "score": 88,
+    "color": "#2e7d8d",
+    "details": "Rigid, protective, and suitable for chilled foods.",
+    "features": {
+      "Product fragility": 92,
+      "Product dimensions": 91,
+      "Required cushioning": 84,
+      "Packaging material": 87,
+      "Box strength required": 88,
+      "Transportation risk": 80,
+      "Moisture sensitivity": 78,
+      "Temperature sensitivity": 75,
+      "Expected handling/shock": 88,
+      "Packaging cost": 64,
+      "Sustainability/recyclability": 72,
+      "Estimated damage risk": 81,
+      "Packaging dimensions": 90
+    }
+  },
+  {
+    "name": "Barrier laminate pouch",
+    "score": 86,
+    "color": "#f2a65a",
+    "details": "Strong oxygen, aroma, and moisture barrier for sensitive products.",
+    "features": {
+      "Product fragility": 70,
+      "Product dimensions": 76,
+      "Required cushioning": 62,
+      "Packaging material": 91,
+      "Box strength required": 66,
+      "Transportation risk": 75,
+      "Moisture sensitivity": 88,
+      "Temperature sensitivity": 72,
+      "Expected handling/shock": 70,
+      "Packaging cost": 69,
+      "Sustainability/recyclability": 60,
+      "Estimated damage risk": 77,
+      "Packaging dimensions": 82
+    }
+  },
+  {
+    "name": "Micro-perforated PE",
+    "score": 84,
+    "color": "#82c7af",
+    "details": "Good for produce with controlled gas exchange.",
+    "features": {
+      "Product fragility": 82,
+      "Product dimensions": 74,
+      "Required cushioning": 66,
+      "Packaging material": 88,
+      "Box strength required": 60,
+      "Transportation risk": 74,
+      "Moisture sensitivity": 87,
+      "Temperature sensitivity": 79,
+      "Expected handling/shock": 65,
+      "Packaging cost": 81,
+      "Sustainability/recyclability": 80,
+      "Estimated damage risk": 75,
+      "Packaging dimensions": 78
+    }
+  },
+  {
+    "name": "Modified atmosphere tray",
+    "score": 81,
+    "color": "#8a7fd6",
+    "details": "Optimized for product freshness and shelf life extension.",
+    "features": {
+      "Product fragility": 78,
+      "Product dimensions": 86,
+      "Required cushioning": 70,
+      "Packaging material": 83,
+      "Box strength required": 83,
+      "Transportation risk": 77,
+      "Moisture sensitivity": 80,
+      "Temperature sensitivity": 86,
+      "Expected handling/shock": 76,
+      "Packaging cost": 58,
+      "Sustainability/recyclability": 68,
+      "Estimated damage risk": 74,
+      "Packaging dimensions": 85
+    }
+  },
+  {
+    "name": "Paperboard carton",
+    "score": 77,
+    "color": "#d7a44d",
+    "details": "Very good for dry goods and cardboard-friendly logistics.",
+    "features": {
+      "Product fragility": 58,
+      "Product dimensions": 89,
+      "Required cushioning": 52,
+      "Packaging material": 81,
+      "Box strength required": 93,
+      "Transportation risk": 84,
+      "Moisture sensitivity": 60,
+      "Temperature sensitivity": 59,
+      "Expected handling/shock": 80,
+      "Packaging cost": 83,
+      "Sustainability/recyclability": 92,
+      "Estimated damage risk": 72,
+      "Packaging dimensions": 90
+    }
+  },
+  {
+    "name": "Pulp tray + perforated film",
+    "score": 79,
+    "color": "#b78a5f",
+    "details": "A protective fruit tray with ventilation for berries and soft produce.",
+    "features": {
+      "Product fragility": 94,
+      "Product dimensions": 88,
+      "Required cushioning": 90,
+      "Packaging material": 86,
+      "Box strength required": 77,
+      "Transportation risk": 82,
+      "Moisture sensitivity": 88,
+      "Temperature sensitivity": 80,
+      "Expected handling/shock": 90,
+      "Packaging cost": 68,
+      "Sustainability/recyclability": 84,
+      "Estimated damage risk": 73,
+      "Packaging dimensions": 87
+    }
+  },
+  {
+    "name": "Rigid clamshell",
+    "score": 75,
+    "color": "#7ca3d0",
+    "details": "A rigid shell that protects delicate products during display and shipping.",
+    "features": {
+      "Product fragility": 91,
+      "Product dimensions": 85,
+      "Required cushioning": 72,
+      "Packaging material": 84,
+      "Box strength required": 89,
+      "Transportation risk": 78,
+      "Moisture sensitivity": 64,
+      "Temperature sensitivity": 63,
+      "Expected handling/shock": 90,
+      "Packaging cost": 57,
+      "Sustainability/recyclability": 62,
+      "Estimated damage risk": 70,
+      "Packaging dimensions": 84
+    }
+  },
+  {
+    "name": "Vacuum skin pack",
+    "score": 83,
+    "color": "#9ba5d1",
+    "details": "Excellent for fresh meat and seafood requiring close-fit protection and reduced oxygen exposure.",
+    "features": {
+      "Product fragility": 76,
+      "Product dimensions": 82,
+      "Required cushioning": 60,
+      "Packaging material": 92,
+      "Box strength required": 70,
+      "Transportation risk": 76,
+      "Moisture sensitivity": 82,
+      "Temperature sensitivity": 90,
+      "Expected handling/shock": 68,
+      "Packaging cost": 62,
+      "Sustainability/recyclability": 54,
+      "Estimated damage risk": 74,
+      "Packaging dimensions": 77
+    }
+  },
+  {
+    "name": "Foam net + corrugate",
+    "score": 78,
+    "color": "#d7a263",
+    "details": "Good cushioning and edge protection for whole fruits and produce during transit.",
+    "features": {
+      "Product fragility": 88,
+      "Product dimensions": 90,
+      "Required cushioning": 93,
+      "Packaging material": 79,
+      "Box strength required": 88,
+      "Transportation risk": 86,
+      "Moisture sensitivity": 72,
+      "Temperature sensitivity": 61,
+      "Expected handling/shock": 90,
+      "Packaging cost": 70,
+      "Sustainability/recyclability": 79,
+      "Estimated damage risk": 68,
+      "Packaging dimensions": 89
+    }
+  },
+  {
+    "name": "High barrier vacuum pack",
+    "score": 82,
+    "color": "#8c6bb7",
+    "details": "High protection for oxygen-sensitive seafood and meat with strong seal retention.",
+    "features": {
+      "Product fragility": 74,
+      "Product dimensions": 80,
+      "Required cushioning": 58,
+      "Packaging material": 94,
+      "Box strength required": 68,
+      "Transportation risk": 79,
+      "Moisture sensitivity": 86,
+      "Temperature sensitivity": 94,
+      "Expected handling/shock": 72,
+      "Packaging cost": 59,
+      "Sustainability/recyclability": 52,
+      "Estimated damage risk": 73,
+      "Packaging dimensions": 74
+    }
+  },
+  {
+    "name": "Metalized pouch",
+    "score": 76,
+    "color": "#8f9196",
+    "details": "Used for oxygen and light-sensitive roasted or dry products.",
+    "features": {
+      "Product fragility": 56,
+      "Product dimensions": 82,
+      "Required cushioning": 48,
+      "Packaging material": 90,
+      "Box strength required": 63,
+      "Transportation risk": 71,
+      "Moisture sensitivity": 84,
+      "Temperature sensitivity": 52,
+      "Expected handling/shock": 58,
+      "Packaging cost": 66,
+      "Sustainability/recyclability": 50,
+      "Estimated damage risk": 69,
+      "Packaging dimensions": 76
+    }
+  },
+  {
+    "name": "Moisture barrier pouch",
+    "score": 80,
+    "color": "#a8b65d",
+    "details": "Strong protection for dry grains and moisture-sensitive goods with low oxygen transfer.",
+    "features": {
+      "Product fragility": 48,
+      "Product dimensions": 84,
+      "Required cushioning": 46,
+      "Packaging material": 89,
+      "Box strength required": 60,
+      "Transportation risk": 73,
+      "Moisture sensitivity": 92,
+      "Temperature sensitivity": 50,
+      "Expected handling/shock": 55,
+      "Packaging cost": 75,
+      "Sustainability/recyclability": 58,
+      "Estimated damage risk": 68,
+      "Packaging dimensions": 79
+    }
+  }
+]

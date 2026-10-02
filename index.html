@@ -1,0 +1,877 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OptiPAck | Food packaging recommendations</title>
+  <style>
+    :root {
+      --bg: #f5f7f2;
+      --panel: #ffffff;
+      --panel-soft: #edf3ec;
+      --line: #dfe7dc;
+      --text: #16362d;
+      --muted: #5d736a;
+      --green: #235845;
+      --green-2: #71b06a;
+      --accent: #dfe9a5;
+      --shadow: 0 16px 40px rgba(20, 42, 34, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .page {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 16px 40px;
+    }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      gap: 16px;
+    }
+    .brand {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+    }
+    .brand span { color: var(--green-2); }
+    .status {
+      font-size: 12px;
+      color: var(--muted);
+      background: rgba(35,88,69,0.08);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 8px 12px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+    .input-panel { padding: 20px; }
+    .result-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .result-actions .secondary-button {
+      color: var(--green);
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+    }
+    .label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    input, select, button {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font: inherit;
+    }
+    input, select {
+      height: 48px;
+      background: #fff;
+      padding: 0 14px;
+      color: var(--text);
+      font-size: 14px;
+      margin-bottom: 14px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: rgba(35, 88, 69, 0.7);
+      box-shadow: 0 0 0 3px rgba(35, 88, 69, 0.08);
+    }
+    button {
+      background: var(--green);
+      color: #fff;
+      border: none;
+      padding: 14px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    button:hover { transform: translateY(-1px); }
+    .helper {
+      margin-top: 14px;
+      background: var(--panel-soft);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .helper strong { color: var(--text); }
+    .admin-box {
+      margin-top: 18px;
+      background: #fbfcf9;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .admin-box h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      letter-spacing: -0.03em;
+    }
+    .admin-form {
+      display: grid;
+      gap: 10px;
+    }
+    .admin-form input,
+    .admin-form select {
+      margin-bottom: 0;
+      height: 42px;
+      font-size: 13px;
+    }
+    .admin-form button {
+      height: 42px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .tiny-note {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+    .result-panel {
+      padding: 20px;
+    }
+    .result-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--green-2);
+      margin-bottom: 8px;
+    }
+    h2 {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 30px);
+      letter-spacing: -0.05em;
+    }
+    .score-badge {
+      min-width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: rgba(113, 176, 106, 0.12);
+      border: 2px solid rgba(35, 88, 69, 0.15);
+      color: var(--green);
+      font-weight: 800;
+      font-size: 24px;
+    }
+    .meta-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .chip {
+      background: #f1f7ef;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: var(--green);
+      font-weight: 700;
+    }
+    .summary {
+      background: var(--panel-soft);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .qr-card {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      background: #f9faf6;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .qr-card img {
+      width: 120px;
+      height: 120px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 6px;
+    }
+    .qr-card p {
+      margin: 0;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .chart-box {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .chart-box h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      letter-spacing: -0.03em;
+    }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 220px repeat(3, minmax(120px, 1fr));
+      gap: 8px 10px;
+      align-items: center;
+    }
+    .chart-head {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding-bottom: 4px;
+      line-height: 1.4;
+    }
+    .chart-ranklist {
+      margin: 0 0 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+      font-weight: 700;
+    }
+    .chart-row-label {
+      font-size: 12px;
+      color: var(--text);
+      font-weight: 700;
+      padding-right: 8px;
+    }
+    .chart-metric {
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: linear-gradient(90deg, rgba(229, 238, 227, 0.7), rgba(255,255,255,0));
+      overflow: hidden;
+      position: relative;
+    }
+    .chart-metric span {
+      position: absolute;
+      inset: 0;
+      border-radius: 10px;
+      opacity: 0.92;
+    }
+    .chart-metric strong {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 10px;
+      color: #17362d;
+    }
+    .ai-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .ai-list span {
+      background: rgba(35, 88, 69, 0.06);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .chart-grid { grid-template-columns: 180px repeat(3, minmax(90px, 1fr)); }
+    }
+    @media (max-width: 560px) {
+      .page { padding: 0 12px 32px; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .brand { font-size: 22px; }
+      .result-head { align-items: flex-start; }
+      .qr-card { flex-direction: column; align-items: flex-start; }
+      .chart-grid {
+        grid-template-columns: 1fr;
+      }
+      .chart-row-label, .chart-head { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand"><span>Opti</span>PAck</div>
+    </header>
+
+    <div class="layout">
+      <section class="panel input-panel">
+        <form id="packForm">
+          <label class="label" for="foodName">Food name</label>
+          <input id="foodName" name="foodName" type="text" placeholder="e.g. Tomato" required />
+
+          <label class="label" for="productType">Product type</label>
+          <select id="productType" name="productType" required>
+            <option value="" disabled selected>Select product type</option>
+            <option value="Fresh produce">Fresh produce</option>
+            <option value="Fruit">Fruit</option>
+            <option value="Dairy">Dairy</option>
+            <option value="Seafood">Seafood</option>
+            <option value="Meat">Meat</option>
+            <option value="Baked goods">Baked goods</option>
+            <option value="Dry snack">Dry snack</option>
+            <option value="Roasted food">Roasted food</option>
+            <option value="Frozen food">Frozen food</option>
+            <option value="Grains &amp; pulses">Grains &amp; pulses</option>
+            <option value="Beverage">Beverage</option>
+            <option value="Other">Other</option>
+          </select>
+
+          <label class="label" for="temperature">Temperature (°C)</label>
+          <input id="temperature" name="temperature" type="number" min="-50" max="100" step="0.1" required />
+
+          <label class="label" for="humidity">Humidity (%)</label>
+          <input id="humidity" name="humidity" type="number" min="0" max="100" step="1" required />
+
+          <label class="label" for="ph">pH level</label>
+          <input id="ph" name="ph" type="number" min="0" max="14" step="0.1" required />
+
+          <button type="submit">Generate recommendation</button>
+        </form>
+
+      </section>
+
+      <section id="resultPanel" class="panel result-panel" aria-live="polite" hidden>
+        <div class="result-actions">
+          <button id="backToFormBtn" class="secondary-button" type="button">Back to inputs</button>
+          <button id="saveDatabaseBtn" type="button">Save to database</button>
+        </div>
+        <div class="result-head">
+          <div>
+            <div class="eyebrow">Best material</div>
+            <h2 id="bestMaterial"></h2>
+          </div>
+          <div id="matchScore" class="score-badge"></div>
+        </div>
+
+        <div class="summary" id="summaryText"></div>
+
+        <div class="chart-box">
+          <h3>Top 3 best materials</h3>
+          <div class="chart-grid" id="chartGrid"></div>
+        </div>
+
+        <div class="ai-list" id="aiList"></div>
+
+        <div class="qr-card">
+          <img id="qrCode" alt="QR code with packaging details" src="" />
+          <div>
+            <p id="qrText"></p>
+            <p style="margin-top: 10px;"><a id="materialLink" href="#" target="_blank" rel="noopener noreferrer"></a></p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const categoryOrder = [
+      'Product fragility',
+      'Product dimensions',
+      'Required cushioning',
+      'Packaging material',
+      'Box strength required',
+      'Transportation risk',
+      'Moisture sensitivity',
+      'Temperature sensitivity',
+      'Expected handling/shock',
+      'Packaging cost',
+      'Sustainability/recyclability',
+      'Estimated damage risk',
+      'Packaging dimensions'
+    ];
+
+    const fallbackFoodProfiles = [
+      { foodName: 'Tomato', productType: 'Fresh produce', phMin: 4.0, phMax: 4.8, humidityRange: [85, 95], fragility: 7, respiration: 18, temperatureSensitivity: 8, handlingShock: 6, moistureSensitivity: 9, bulkDensity: 7 },
+      { foodName: 'Berry', productType: 'Fruit', phMin: 3.0, phMax: 4.0, humidityRange: [85, 95], fragility: 9, respiration: 28, temperatureSensitivity: 9, handlingShock: 8, moistureSensitivity: 9, bulkDensity: 5 },
+      { foodName: 'Leafy greens', productType: 'Fresh produce', phMin: 5.5, phMax: 6.5, humidityRange: [90, 100], fragility: 8, respiration: 35, temperatureSensitivity: 7, handlingShock: 7, moistureSensitivity: 10, bulkDensity: 4 },
+      { foodName: 'Rice', productType: 'Dry grain', phMin: 6.0, phMax: 7.0, humidityRange: [40, 65], fragility: 2, respiration: 0, temperatureSensitivity: 2, handlingShock: 3, moistureSensitivity: 7, bulkDensity: 9 },
+      { foodName: 'Nuts', productType: 'Dry snack', phMin: 5.8, phMax: 6.6, humidityRange: [35, 55], fragility: 3, respiration: 0, temperatureSensitivity: 2, handlingShock: 4, moistureSensitivity: 8, bulkDensity: 8 },
+      { foodName: 'Cheese', productType: 'Dairy', phMin: 5.0, phMax: 6.0, humidityRange: [55, 80], fragility: 6, respiration: 0, temperatureSensitivity: 8, handlingShock: 5, moistureSensitivity: 7, bulkDensity: 6 },
+      { foodName: 'Fish', productType: 'Seafood', phMin: 6.2, phMax: 6.8, humidityRange: [80, 95], fragility: 7, respiration: 0, temperatureSensitivity: 10, handlingShock: 6, moistureSensitivity: 8, bulkDensity: 5 },
+      { foodName: 'Coffee', productType: 'Roasted food', phMin: 5.0, phMax: 6.0, humidityRange: [25, 50], fragility: 3, respiration: 0, temperatureSensitivity: 3, handlingShock: 4, moistureSensitivity: 9, bulkDensity: 7 },
+      { foodName: 'Frozen vegetables', productType: 'Frozen food', phMin: 5.8, phMax: 6.6, humidityRange: [55, 75], fragility: 6, respiration: 0, temperatureSensitivity: 10, handlingShock: 7, moistureSensitivity: 6, bulkDensity: 6 },
+      { foodName: 'Cake', productType: 'Baked goods', phMin: 5.0, phMax: 7.0, humidityRange: [40, 60], fragility: 7, respiration: 0, temperatureSensitivity: 7, handlingShock: 8, moistureSensitivity: 6, bulkDensity: 6 }
+    ];
+
+    const generalFoodProfiles = {
+      'Fresh produce': { fragility: 7, respiration: 25, temperatureSensitivity: 7, handlingShock: 6, moistureSensitivity: 9, bulkDensity: 5 },
+      'Fruit': { fragility: 7, respiration: 20, temperatureSensitivity: 7, handlingShock: 7, moistureSensitivity: 8, bulkDensity: 6 },
+      'Dairy': { fragility: 6, respiration: 0, temperatureSensitivity: 8, handlingShock: 5, moistureSensitivity: 7, bulkDensity: 6 },
+      'Seafood': { fragility: 7, respiration: 0, temperatureSensitivity: 10, handlingShock: 7, moistureSensitivity: 8, bulkDensity: 5 },
+      'Meat': { fragility: 7, respiration: 0, temperatureSensitivity: 9, handlingShock: 7, moistureSensitivity: 8, bulkDensity: 6 },
+      'Baked goods': { fragility: 7, respiration: 0, temperatureSensitivity: 6, handlingShock: 8, moistureSensitivity: 5, bulkDensity: 6 },
+      'Dry snack': { fragility: 3, respiration: 0, temperatureSensitivity: 3, handlingShock: 4, moistureSensitivity: 8, bulkDensity: 7 },
+      'Roasted food': { fragility: 3, respiration: 0, temperatureSensitivity: 3, handlingShock: 4, moistureSensitivity: 9, bulkDensity: 7 },
+      'Frozen food': { fragility: 6, respiration: 0, temperatureSensitivity: 10, handlingShock: 7, moistureSensitivity: 6, bulkDensity: 6 },
+      'Grains & pulses': { fragility: 2, respiration: 0, temperatureSensitivity: 3, handlingShock: 4, moistureSensitivity: 7, bulkDensity: 8 },
+      'Beverage': { fragility: 4, respiration: 0, temperatureSensitivity: 7, handlingShock: 5, moistureSensitivity: 5, bulkDensity: 7 },
+      'Other': { fragility: 5, respiration: 0, temperatureSensitivity: 5, handlingShock: 5, moistureSensitivity: 6, bulkDensity: 5 }
+    };
+
+    const foodNameHints = {
+      'Fruit': ['apple', 'banana', 'berry', 'berries', 'citrus', 'grape', 'mango', 'melon', 'orange', 'pear', 'peach', 'plum', 'fruit'],
+      'Fresh produce': ['vegetable', 'vegetables', 'lettuce', 'spinach', 'cabbage', 'broccoli', 'carrot', 'cucumber', 'onion', 'pepper', 'tomato', 'potato', 'mushroom', 'greens'],
+      'Dairy': ['milk', 'cheese', 'yogurt', 'yoghurt', 'cream', 'butter'],
+      'Seafood': ['fish', 'salmon', 'tuna', 'shrimp', 'prawn', 'crab', 'lobster', 'shellfish', 'seafood'],
+      'Meat': ['beef', 'chicken', 'pork', 'lamb', 'turkey', 'duck', 'meat', 'sausage'],
+      'Baked goods': ['cake', 'bread', 'pastry', 'croissant', 'cookie', 'biscuit', 'muffin', 'donut', 'doughnut', 'pie', 'bakery'],
+      'Dry snack': ['snack', 'nuts', 'almond', 'cashew', 'peanut', 'cracker', 'popcorn', 'chips'],
+      'Roasted food': ['coffee', 'roasted', 'cocoa'],
+      'Frozen food': ['frozen', 'ice cream'],
+      'Grains & pulses': ['grain', 'rice', 'wheat', 'oat', 'oats', 'barley', 'lentil', 'bean', 'beans', 'chickpea', 'pulse', 'flour', 'pasta'],
+      'Beverage': ['juice', 'drink', 'beverage', 'tea', 'water', 'soda']
+    };
+
+    const fallbackMaterials = [
+      {
+        name: 'Breathable film',
+        color: '#67b66d',
+        details: 'Best for fresh produce and high humidity products.',
+        features: {
+          'Product fragility': 86,
+          'Product dimensions': 80,
+          'Required cushioning': 75,
+          'Packaging material': 90,
+          'Box strength required': 62,
+          'Transportation risk': 70,
+          'Moisture sensitivity': 90,
+          'Temperature sensitivity': 82,
+          'Expected handling/shock': 68,
+          'Packaging cost': 78,
+          'Sustainability/recyclability': 77,
+          'Estimated damage risk': 76,
+          'Packaging dimensions': 83
+        }
+      },
+      {
+        name: 'PET tray + lidding',
+        color: '#4a8ca4',
+        details: 'Rigid, protective, and highly suitable for chilled foods.',
+        features: {
+          'Product fragility': 92,
+          'Product dimensions': 91,
+          'Required cushioning': 84,
+          'Packaging material': 87,
+          'Box strength required': 88,
+          'Transportation risk': 80,
+          'Moisture sensitivity': 78,
+          'Temperature sensitivity': 75,
+          'Expected handling/shock': 88,
+          'Packaging cost': 64,
+          'Sustainability/recyclability': 72,
+          'Estimated damage risk': 81,
+          'Packaging dimensions': 90
+        }
+      },
+      {
+        name: 'Barrier laminate pouch',
+        color: '#d89b5d',
+        details: 'Strong oxygen and moisture barrier for sensitive products.',
+        features: {
+          'Product fragility': 70,
+          'Product dimensions': 76,
+          'Required cushioning': 62,
+          'Packaging material': 91,
+          'Box strength required': 66,
+          'Transportation risk': 75,
+          'Moisture sensitivity': 88,
+          'Temperature sensitivity': 72,
+          'Expected handling/shock': 70,
+          'Packaging cost': 69,
+          'Sustainability/recyclability': 60,
+          'Estimated damage risk': 77,
+          'Packaging dimensions': 82
+        }
+      }
+    ];
+
+    const API_BASE = 'http://localhost:8000';
+
+    let foodProfiles = fallbackFoodProfiles;
+    let materialCatalog = fallbackMaterials;
+    let currentRecommendation = null;
+
+    async function apiRequest(path, options = {}) {
+      const response = await fetch(`${API_BASE}${path}`, {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(options.headers || {})
+        },
+        ...options
+      });
+
+      if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message || 'Request failed');
+      }
+
+      return response.json();
+    }
+
+    async function loadDatabase() {
+      try {
+        const [foods, materials] = await Promise.all([
+          apiRequest('/food-profiles'),
+          apiRequest('/materials')
+        ]);
+
+        foodProfiles = foods;
+        materialCatalog = materials;
+      } catch (error) {
+        foodProfiles = fallbackFoodProfiles;
+        materialCatalog = fallbackMaterials;
+        console.warn('Using fallback data because the SQLite API is unavailable.', error);
+      }
+    }
+
+    function getFoodProfile(foodName, productType, ph, humidity) {
+      const cleanName = (foodName || '').trim().toLowerCase();
+      const exactMatch = foodProfiles.find((item) => cleanName && item.foodName && item.foodName.toLowerCase() === cleanName);
+      if (exactMatch) {
+        return productType && productType.toLowerCase() !== 'other'
+          ? { ...exactMatch, productType }
+          : exactMatch;
+      }
+
+      let category = productType || 'Other';
+      if (category.toLowerCase() === 'other') {
+        const normalizedName = ` ${(foodName || '').trim().toLowerCase().replace(/[-_]/g, ' ')} `;
+        for (const [family, hints] of Object.entries(foodNameHints)) {
+          if (hints.some((hint) => normalizedName.includes(` ${hint} `))) {
+            category = family;
+            break;
+          }
+        }
+      }
+
+      return {
+        foodName: foodName || 'Custom product',
+        productType: category,
+        phMin: Math.max(0, ph - 1.5),
+        phMax: Math.min(14, ph + 1.5),
+        humidityRange: [Math.max(0, humidity - 10), Math.min(100, humidity + 10)],
+        ...generalFoodProfiles[category] || generalFoodProfiles.Other
+      };
+    }
+
+    const productTypeRules = {
+      'fresh produce': [['breathable', 'perforated', 'modified atmosphere'], ['tray', 'pulp'], ['vacuum']],
+      'fruit': [['tray', 'pulp', 'foam', 'clamshell'], ['perforated', 'breathable'], ['vacuum']],
+      'dairy': [['pet tray', 'lidding', 'vacuum', 'tray'], ['barrier', 'laminate', 'pouch'], ['breathable']],
+      'seafood': [['vacuum', 'barrier', 'laminate'], ['tray', 'pouch'], ['breathable']],
+      'meat': [['vacuum', 'barrier', 'laminate'], ['tray', 'pouch'], ['breathable']],
+      'baked goods': [['paperboard', 'carton', 'pulp', 'corrugate'], ['pouch', 'film'], ['vacuum']],
+      'dry snack': [['pouch', 'laminate', 'carton', 'paperboard'], ['barrier', 'film'], ['breathable']],
+      'roasted food': [['metalized', 'pouch', 'laminate'], ['barrier', 'carton'], ['breathable']],
+      'frozen food': [['vacuum', 'barrier', 'laminate', 'tray'], ['carton', 'paperboard'], ['breathable']],
+      'grains & pulses': [['pouch', 'barrier', 'paperboard', 'carton'], ['laminate', 'film'], ['breathable']],
+      'beverage': [['bottle', 'pet', 'carton', 'aseptic'], ['pouch'], []]
+    };
+
+    function featureFit(material, targets) {
+      const values = Object.entries(targets).map(([key, target]) => 100 - Math.abs(Number(material.features?.[key] ?? 60) - target));
+      return Math.max(0, Math.min(100, values.reduce((sum, value) => sum + value, 0) / values.length));
+    }
+
+    function scoreMaterialComponents(material, foodProfile, temperature, humidity, ph) {
+      const features = material.features || {};
+      const materialName = material.name.toLowerCase();
+      const productType = (foodProfile.productType || 'Other').toLowerCase();
+      const fragility = Number(foodProfile.fragility ?? 5);
+      const shock = Number(foodProfile.handlingShock ?? 5);
+      const temperatureSensitivity = Number(foodProfile.temperatureSensitivity ?? 5);
+      const moistureSensitivity = Number(foodProfile.moistureSensitivity ?? 5);
+      const bulkDensity = Number(foodProfile.bulkDensity ?? 5);
+
+      const foodScore = featureFit(material, {
+        'Product fragility': Math.min(100, 42 + fragility * 6),
+        'Required cushioning': Math.min(100, 28 + fragility * 6),
+        'Box strength required': Math.min(100, 30 + fragility * 5),
+        'Expected handling/shock': Math.min(100, 26 + shock * 7 + fragility * 3),
+        'Estimated damage risk': Math.min(100, 20 + fragility * 4 + moistureSensitivity * 2),
+        'Product dimensions': Math.min(100, 40 + bulkDensity * 5)
+      });
+
+      const rules = productTypeRules[productType];
+      let typeScore = 65;
+      if (rules?.[0].some((term) => materialName.includes(term))) typeScore = 95;
+      else if (rules?.[2].some((term) => materialName.includes(term))) typeScore = 45;
+      else if (rules?.[1].some((term) => materialName.includes(term))) typeScore = 80;
+
+      const temperatureTarget = Math.max(0, Math.min(100, 50 + Math.abs(temperature - 5) * 1.5 + temperatureSensitivity * 1.5));
+      const temperatureScore = Math.max(0, Math.min(100, 100 - Math.abs(Number(features['Temperature sensitivity'] ?? 60) - temperatureTarget)));
+      const humidityTarget = Math.max(0, Math.min(100, 35 + humidity * 0.35 + moistureSensitivity * 2.5));
+      const humidityScore = Math.max(0, Math.min(100, 100 - Math.abs(Number(features['Moisture sensitivity'] ?? 60) - humidityTarget)));
+
+      let phScore = Number(features['Packaging material'] ?? 60);
+      const chemistryLoad = Math.max(0, 5.5 - ph, ph - 8);
+      if (chemistryLoad && ['barrier', 'laminate', 'pouch', 'pet', 'tray', 'vacuum', 'film'].some((term) => materialName.includes(term))) {
+        phScore += Math.min(15, chemistryLoad * 4);
+      } else if (chemistryLoad && ['paperboard', 'pulp', 'corrugate', 'carton'].some((term) => materialName.includes(term))) {
+        phScore -= Math.min(20, chemistryLoad * 5);
+      }
+
+      const components = {
+        Food: foodScore,
+        'Product Type': typeScore,
+        Temperature: temperatureScore,
+        Humidity: humidityScore,
+        pH: Math.max(0, Math.min(100, phScore))
+      };
+      const score = components.Food * 0.35 + components['Product Type'] * 0.25 + components.Temperature * 0.20 + components.Humidity * 0.15 + components.pH * 0.05;
+      return { score: Math.round(score * 10) / 10, components };
+    }
+
+    function getTopMaterials(foodProfile, temperature, humidity, ph) {
+      return materialCatalog.map((material) => {
+        const result = scoreMaterialComponents(material, foodProfile, temperature, humidity, ph);
+        return { ...material, score: result.score, components: result.components };
+      }).sort((a, b) => b.score - a.score).slice(0, 3);
+    }
+
+    function renderChart(top3) {
+      const chartGrid = document.getElementById('chartGrid');
+      const rows = [];
+      rows.push(`<div class="chart-head">Category</div>${top3.map((item, index) => `<div class="chart-head">${index + 1}.<br>${item.name}</div>`).join('')}`);
+
+      categoryOrder.forEach((category) => {
+        const values = top3.map((item) => ({
+          value: Math.min(99, Math.max(30, item.features?.[category] ?? 60)),
+          color: item.color || '#7aa86c'
+        }));
+
+        rows.push(`<div class="chart-row-label">${category}</div>`);
+        values.forEach((item) => {
+          rows.push(`
+            <div class="chart-metric">
+              <span style="width:${item.value}%; background:${item.color};"></span>
+              <strong>${item.value}</strong>
+            </div>
+          `);
+        });
+      });
+
+      chartGrid.innerHTML = rows.join('');
+    }
+
+    function renderAiSummary(profile, temperature, ph, humidity, top3) {
+      const aiList = document.getElementById('aiList');
+      const components = top3[0].components || {};
+      const items = [
+        `pH ${ph}`,
+        `${profile.productType}`,
+        `Fragility ${profile.fragility}/10`,
+        `Shock ${profile.handlingShock}/10`,
+        `Temperature sensitivity ${profile.temperatureSensitivity}/10`
+      ];
+      aiList.innerHTML = items.map((item) => `<span>${item}</span>`).join('');
+    }
+
+    function getAppBaseUrl() {
+      if (window.location.protocol === 'file:') {
+        return 'http://localhost:3000';
+      }
+
+      return window.location.origin || 'http://localhost:3000';
+    }
+
+    function updateQrCode(foodName, productType, ph, humidity, bestMaterial) {
+      const baseUrl = getAppBaseUrl();
+      const detailUrl = new URL('material-details.html', baseUrl);
+      detailUrl.searchParams.set('material', bestMaterial.name);
+      const qrCode = document.getElementById('qrCode');
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(detailUrl.toString())}`;
+      const materialLink = document.getElementById('materialLink');
+
+      qrCode.src = qrCodeUrl;
+      qrCode.alt = `QR code for ${bestMaterial.name} detail sheet`;
+      document.getElementById('qrText').textContent = `Scan for packaging details: ${bestMaterial.name} for ${foodName}.`;
+      materialLink.href = detailUrl.toString();
+      materialLink.textContent = `Open ${bestMaterial.name} details`;
+    }
+
+    function revealRecommendationPanel() {
+      document.querySelector('.input-panel').hidden = true;
+      document.getElementById('resultPanel').hidden = false;
+    }
+
+    function returnToForm() {
+      document.getElementById('resultPanel').hidden = true;
+      document.querySelector('.input-panel').hidden = false;
+    }
+
+    async function renderRecommendation(values) {
+      const foodName = values.foodName || 'Custom product';
+      const productType = values.productType || 'Other';
+      const temperature = Number(values.temperature);
+      const ph = Number(values.ph);
+      const humidity = Number(values.humidity);
+
+      try {
+        const response = await fetch('http://localhost:8000/recommend', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ foodName, productType, temperature, ph, humidity })
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          const best = result.bestMaterial;
+          const top3 = result.top3 || [];
+          const profile = result.profile || getFoodProfile(foodName, productType, ph, humidity);
+
+          currentRecommendation = {
+            foodName,
+            productType,
+            temperature,
+            ph,
+            humidity,
+            profile,
+            top3,
+            bestMaterial: best
+          };
+
+          revealRecommendationPanel();
+          document.getElementById('bestMaterial').textContent = best.name;
+          document.getElementById('matchScore').textContent = Math.round(best.score);
+          document.getElementById('summaryText').textContent = result.summary;
+          renderChart(top3);
+          renderAiSummary(profile, temperature, ph, humidity, top3);
+          updateQrCode(foodName, productType, ph, humidity, best);
+          return;
+        }
+      } catch (error) {
+        console.warn('FastAPI recommendation failed, falling back to local scoring.', error);
+      }
+
+      const profile = getFoodProfile(foodName, productType, ph, humidity);
+      const top3 = getTopMaterials(profile, temperature, humidity, ph);
+      const best = top3[0];
+      const score = Math.round(best.score);
+
+      currentRecommendation = {
+        foodName,
+        productType,
+        temperature,
+        ph,
+        humidity,
+        profile,
+        top3,
+        bestMaterial: best
+      };
+
+      revealRecommendationPanel();
+      document.getElementById('bestMaterial').textContent = best.name;
+      document.getElementById('matchScore').textContent = score;
+
+      document.getElementById('summaryText').textContent = `${best.details} This recommendation was optimized for ${foodName.toLowerCase()} with ${productType.toLowerCase()} storage conditions and ${humidity}% humidity.`;
+
+      renderChart(top3);
+      renderAiSummary(profile, temperature, ph, humidity, top3);
+      updateQrCode(foodName, productType, ph, humidity, best);
+    }
+
+    async function saveDatabaseRecord() {
+      if (!currentRecommendation) return;
+
+      try {
+        const payload = {
+          foodName: currentRecommendation.foodName,
+          productType: currentRecommendation.productType,
+          temperature: currentRecommendation.temperature,
+          ph: currentRecommendation.ph,
+          humidity: currentRecommendation.humidity,
+          packagingScore: currentRecommendation.bestMaterial.score,
+          scoreComponents: currentRecommendation.bestMaterial.components,
+          profile: currentRecommendation.profile,
+          materialName: currentRecommendation.bestMaterial.name,
+          materialDetails: currentRecommendation.bestMaterial.details,
+          color: currentRecommendation.bestMaterial.color,
+          features: currentRecommendation.bestMaterial.features
+        };
+
+        await fetch(`${API_BASE}/save-record`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const saveButton = document.getElementById('saveDatabaseBtn');
+        const previousText = saveButton.textContent;
+        saveButton.textContent = 'Saved';
+        setTimeout(() => {
+          saveButton.textContent = previousText;
+        }, 1600);
+      } catch (error) {
+        console.error('Failed to save to database:', error);
+      }
+    }
+
+    function refreshRecommendationFromForm() {
+      const form = document.getElementById('packForm');
+      const formData = new FormData(form);
+      const values = Object.fromEntries(formData.entries());
+      renderRecommendation(values);
+    }
+
+    async function init() {
+      await loadDatabase();
+
+      document.getElementById('saveDatabaseBtn').addEventListener('click', saveDatabaseRecord);
+      document.getElementById('backToFormBtn').addEventListener('click', returnToForm);
+
+      const form = document.getElementById('packForm');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        refreshRecommendationFromForm();
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>

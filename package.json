@@ -1,0 +1,13 @@
+{
+  "name": "packwise-sqlite",
+  "version": "1.0.0",
+  "description": "OptiPAck packaging recommendation engine with SQLite persistence",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "sql.js": "^1.13.0"
+  }
+}
