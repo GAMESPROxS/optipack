@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Packaging material details</title>
   <style>
     :root {
@@ -149,6 +149,31 @@
       color: var(--muted);
       line-height: 1.6;
     }
+    @media (max-width: 560px), (pointer: coarse) and (max-width: 900px) {
+      .page {
+        width: 100%;
+        margin: 16px auto;
+        padding: 0 max(12px, env(safe-area-inset-left)) max(28px, env(safe-area-inset-bottom));
+      }
+      .topbar { align-items: center; }
+      .brand { font-size: 22px; }
+      .panel { padding: 16px; border-radius: 14px; }
+      .hero { align-items: flex-start; flex-wrap: nowrap; gap: 12px; }
+      .hero > div:first-child { min-width: 0; }
+      h1 { font-size: 28px; overflow-wrap: anywhere; }
+      .badge { min-width: 62px; height: 62px; font-size: 21px; }
+      .grid, .info-block { grid-template-columns: minmax(0, 1fr); }
+      .card, .info-box { padding: 12px; }
+      .feature-list li { align-items: flex-start; gap: 8px; font-size: 13px; }
+      .feature-list strong { min-width: 0; overflow-wrap: anywhere; }
+      .feature-list li span { flex: 0 0 auto; }
+    }
+    @media (max-width: 360px) {
+      .topbar { gap: 8px; }
+      .topbar .link { font-size: 13px; }
+      .panel { padding: 12px; }
+      .hero { flex-wrap: wrap; }
+    }
   </style>
 </head>
 <body>
@@ -251,8 +276,21 @@
 
       try {
         const baseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : window.location.origin;
-        const response = await fetch(`${baseUrl}/api/materials`);
-        const items = await response.json();
+        let items = null;
+        for (const path of ['/api/materials', '/materials']) {
+          try {
+            const response = await fetch(`${baseUrl}${path}`);
+            if (!response.ok) continue;
+            const result = await response.json();
+            if (Array.isArray(result)) {
+              items = result;
+              break;
+            }
+          } catch (error) {
+            continue;
+          }
+        }
+        if (!items) throw new Error('Material API is unavailable.');
         const selected = items.find((item) => item.name.toLowerCase() === material.toLowerCase()) || items[0];
 
         if (!selected) {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>OptiPAck | Food packaging recommendations</title>
   <style>
     :root {
@@ -255,6 +255,7 @@
       gap: 8px 10px;
       align-items: center;
     }
+    .chart-category { display: contents; }
     .chart-head {
       font-size: 10px;
       text-transform: uppercase;
@@ -314,20 +315,85 @@
       font-size: 11px;
       font-weight: 700;
     }
+    .traits-heading {
+      display: none;
+    }
     @media (max-width: 900px) {
       .layout { grid-template-columns: 1fr; }
       .chart-grid { grid-template-columns: 180px repeat(3, minmax(90px, 1fr)); }
     }
-    @media (max-width: 560px) {
-      .page { padding: 0 12px 32px; }
-      .topbar { align-items: flex-start; flex-direction: column; }
-      .brand { font-size: 22px; }
-      .result-head { align-items: flex-start; }
-      .qr-card { flex-direction: column; align-items: flex-start; }
-      .chart-grid {
-        grid-template-columns: 1fr;
+    @media (max-width: 560px), (pointer: coarse) and (max-width: 900px) {
+      .page {
+        width: 100%;
+        margin: 16px auto;
+        padding: 0 max(12px, env(safe-area-inset-left)) max(28px, env(safe-area-inset-bottom));
       }
-      .chart-row-label, .chart-head { display: none; }
+      .topbar { align-items: flex-start; flex-direction: column; gap: 8px; }
+      .brand { font-size: 22px; }
+      .input-panel, .result-panel { padding: 16px; }
+      input, select { font-size: 16px; }
+      button { min-height: 48px; }
+      .result-actions { grid-template-columns: 1fr; }
+      .result-head { align-items: center; gap: 12px; }
+      .result-head > div:first-child { min-width: 0; }
+      .result-head h2 { overflow-wrap: anywhere; }
+      .score-badge { min-width: 60px; height: 60px; font-size: 20px; }
+      .summary { padding: 12px; }
+      .chart-box { padding: 12px; }
+      .chart-box h3 { font-size: 16px; }
+      .chart-category {
+        display: grid;
+        gap: 7px;
+        padding: 10px 0;
+        border-top: 1px solid var(--line);
+      }
+      .chart-category .chart-row-label {
+        display: block;
+        padding: 0;
+        font-size: 13px;
+      }
+      .chart-grid {
+        display: block;
+      }
+      .chart-head { display: none; }
+      .chart-metric {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        padding: 0 9px;
+      }
+      .chart-metric span { opacity: 0.22; }
+      .chart-metric::before {
+        content: attr(data-material);
+        position: relative;
+        z-index: 1;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 700;
+        overflow-wrap: anywhere;
+        padding-right: 34px;
+      }
+      .chart-metric strong { z-index: 1; font-size: 12px; }
+      .traits-heading {
+        display: block;
+        margin: 18px 0 -10px;
+        font-size: 15px;
+      }
+      .ai-list { gap: 7px; }
+      .ai-list span {
+        color: var(--text);
+        border-radius: 10px;
+        font-size: 12px;
+        line-height: 1.4;
+      }
+      .qr-card { flex-direction: row; align-items: center; gap: 12px; padding: 12px; }
+      .qr-card img { width: 88px; height: 88px; flex: 0 0 auto; }
+      .qr-card > div { min-width: 0; overflow-wrap: anywhere; }
+    }
+    @media (max-width: 360px) {
+      .result-panel, .input-panel { padding: 12px; }
+      .result-actions { gap: 8px; }
+      .qr-card { align-items: flex-start; }
     }
   </style>
 </head>
@@ -359,6 +425,11 @@
             <option value="Beverage">Beverage</option>
             <option value="Other">Other</option>
           </select>
+
+          <div id="customProductTypeField" hidden>
+            <label class="label" for="customProductType">Specify product type</label>
+            <input id="customProductType" name="customProductType" type="text" placeholder="e.g. Plant-based food" />
+          </div>
 
           <label class="label" for="temperature">Temperature (°C)</label>
           <input id="temperature" name="temperature" type="number" min="-50" max="100" step="0.1" required />
@@ -394,6 +465,7 @@
           <div class="chart-grid" id="chartGrid"></div>
         </div>
 
+        <h3 class="traits-heading">Product traits</h3>
         <div class="ai-list" id="aiList"></div>
 
         <div class="qr-card">
@@ -675,27 +747,26 @@
 
     function renderChart(top3) {
       const chartGrid = document.getElementById('chartGrid');
-      const rows = [];
-      rows.push(`<div class="chart-head">Category</div>${top3.map((item, index) => `<div class="chart-head">${index + 1}.<br>${item.name}</div>`).join('')}`);
-
-      categoryOrder.forEach((category) => {
+      const header = `<div class="chart-head">Category</div>${top3.map((item, index) => `<div class="chart-head">${index + 1}.<br>${item.name}</div>`).join('')}`;
+      const categories = categoryOrder.map((category) => {
         const values = top3.map((item) => ({
           value: Math.min(99, Math.max(30, item.features?.[category] ?? 60)),
-          color: item.color || '#7aa86c'
+          color: item.color || '#7aa86c',
+          name: item.name
         }));
 
-        rows.push(`<div class="chart-row-label">${category}</div>`);
-        values.forEach((item) => {
-          rows.push(`
-            <div class="chart-metric">
+        return `<div class="chart-category">
+          <div class="chart-row-label">${category}</div>
+          ${values.map((item) => `
+            <div class="chart-metric" data-material="${item.name}">
               <span style="width:${item.value}%; background:${item.color};"></span>
               <strong>${item.value}</strong>
             </div>
-          `);
-        });
-      });
+          `).join('')}
+        </div>`;
+      }).join('');
 
-      chartGrid.innerHTML = rows.join('');
+      chartGrid.innerHTML = `${header}${categories}`;
     }
 
     function renderAiSummary(profile, temperature, ph, humidity, top3) {
@@ -711,26 +782,37 @@
       aiList.innerHTML = items.map((item) => `<span>${item}</span>`).join('');
     }
 
-    function getAppBaseUrl() {
-      if (window.location.protocol === 'file:') {
-        return 'http://localhost:3000';
+    async function getAppBaseUrl() {
+      const baseUrl = window.location.protocol === 'file:'
+        ? 'http://localhost:3000'
+        : window.location.origin;
+
+      try {
+        const response = await fetch(`${baseUrl}/api/app-url`);
+        if (response.ok) {
+          const result = await response.json();
+          if (result.url) return result.url;
+        }
+      } catch (error) {
+        console.warn('Using the current app address for the material link.', error);
       }
 
-      return window.location.origin || 'http://localhost:3000';
+      return baseUrl;
     }
 
-    function updateQrCode(foodName, productType, ph, humidity, bestMaterial) {
-      const baseUrl = getAppBaseUrl();
-      const detailUrl = new URL('material-details.html', baseUrl);
-      detailUrl.searchParams.set('material', bestMaterial.name);
+    async function updateQrCode(foodName, productType, ph, humidity, bestMaterial) {
+      const baseUrl = await getAppBaseUrl();
+      const detailUrl = `${baseUrl}/material-details.html?material=${encodeURIComponent(bestMaterial.name)}`;
       const qrCode = document.getElementById('qrCode');
-      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(detailUrl.toString())}`;
+      const qrCodeUrl = `${baseUrl}/api/qr?data=${encodeURIComponent(detailUrl)}`;
       const materialLink = document.getElementById('materialLink');
 
       qrCode.src = qrCodeUrl;
       qrCode.alt = `QR code for ${bestMaterial.name} detail sheet`;
-      document.getElementById('qrText').textContent = `Scan for packaging details: ${bestMaterial.name} for ${foodName}.`;
-      materialLink.href = detailUrl.toString();
+      document.getElementById('qrText').textContent =
+      `Scan for packaging details: ${bestMaterial.name} for ${foodName}.`;
+
+      materialLink.href = detailUrl;
       materialLink.textContent = `Open ${bestMaterial.name} details`;
     }
 
@@ -781,7 +863,7 @@
           document.getElementById('summaryText').textContent = result.summary;
           renderChart(top3);
           renderAiSummary(profile, temperature, ph, humidity, top3);
-          updateQrCode(foodName, productType, ph, humidity, best);
+          await updateQrCode(foodName, productType, ph, humidity, best);
           return;
         }
       } catch (error) {
@@ -812,7 +894,7 @@
 
       renderChart(top3);
       renderAiSummary(profile, temperature, ph, humidity, top3);
-      updateQrCode(foodName, productType, ph, humidity, best);
+      await updateQrCode(foodName, productType, ph, humidity, best);
     }
 
     async function saveDatabaseRecord() {
@@ -855,6 +937,10 @@
       const form = document.getElementById('packForm');
       const formData = new FormData(form);
       const values = Object.fromEntries(formData.entries());
+      if (values.productType === 'Other') {
+        values.productType = values.customProductType.trim();
+      }
+      delete values.customProductType;
       renderRecommendation(values);
     }
 
@@ -863,6 +949,19 @@
 
       document.getElementById('saveDatabaseBtn').addEventListener('click', saveDatabaseRecord);
       document.getElementById('backToFormBtn').addEventListener('click', returnToForm);
+
+      const productTypeSelect = document.getElementById('productType');
+      const customProductTypeField = document.getElementById('customProductTypeField');
+      const customProductTypeInput = document.getElementById('customProductType');
+      const updateCustomProductType = () => {
+        const isOther = productTypeSelect.value === 'Other';
+        customProductTypeField.hidden = !isOther;
+        customProductTypeInput.required = isOther;
+        if (!isOther) customProductTypeInput.value = '';
+      };
+
+      productTypeSelect.addEventListener('change', updateCustomProductType);
+      updateCustomProductType();
 
       const form = document.getElementById('packForm');
       form.addEventListener('submit', (event) => {

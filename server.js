@@ -1,7 +1,9 @@
 const express = require('express');
 const fs = require('fs');
+const os = require('os');
 const path = require('path');
 const initSqlJs = require('sql.js');
+const QRCode = require('qrcode');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -153,8 +155,42 @@ async function initializeDatabase() {
 app.use(express.json());
 app.use(express.static(rootDir));
 
+app.get('/api/app-url', (req, res) => {
+  res.set('Access-Control-Allow-Origin', '*');
+
+  const host = req.get('host') || `localhost:${port}`;
+  const protocol = (req.get('x-forwarded-proto') || req.protocol).split(',')[0];
+  let appHost = host;
+
+  if (/^(localhost|127(?:\.\d{1,3}){3})(?::\d+)?$/i.test(host)) {
+    const addresses = Object.values(os.networkInterfaces()).flat().filter((address) =>
+      address && !address.internal && (address.family === 'IPv4' || address.family === 4)
+    );
+    const lanAddress = addresses.find(({ address }) =>
+      /^(10\.|192\.168\.|172\.(1[6-9]|2\d|3[01])\.)/.test(address)
+    ) || addresses[0];
+
+    if (lanAddress) appHost = `${lanAddress.address}:${port}`;
+  }
+
+  res.json({ url: `${protocol}://${appHost}` });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, database: 'sqlite' });
+});
+
+app.get('/api/qr', async (req, res) => {
+  if (typeof req.query.data !== 'string' || !req.query.data) {
+    return res.status(400).json({ error: 'A URL is required to generate a QR code.' });
+  }
+
+  try {
+    const image = await QRCode.toBuffer(req.query.data, { type: 'png', width: 280, margin: 1 });
+    return res.type('png').send(image);
+  } catch (error) {
+    return res.status(400).json({ error: 'Unable to generate the QR code.' });
+  }
 });
 
 app.get('/api/food-profiles', (req, res) => {
