@@ -6,6 +6,11 @@ from pydantic import BaseModel, Field
 
 from backend.database import fetch_food_profiles, fetch_materials
 from backend.recommender import rank_materials
+from flask_cors import CORS
+
+CORS(app, origins=[
+    "https://gamesproxs.github.io"
+])
 
 app = FastAPI(title='OptiPAck Recommendation API', version='1.0.0')
 app.add_middleware(
