@@ -4,15 +4,20 @@ from typing import Any
 
 
 SCORE_WEIGHTS = {
-    'Food': 0.35,
-    'Product Type': 0.25,
-    'Temperature': 0.20,
-    'Humidity': 0.15,
+    'Food': 0.22,
+    'Product Type': 0.18,
+    'Temperature': 0.14,
+    'Humidity': 0.10,
     'pH': 0.05,
+    'OTR': 0.10,
+    'WVTR': 0.09,
+    'Heat Sealability': 0.06,
+    'Biodegradability': 0.06,
 }
 
 PRODUCT_TYPE_RULES = {
     'fresh produce': (('breathable', 'perforated', 'modified atmosphere'), ('tray', 'pulp'), ('vacuum',)),
+    'vegetable': (('breathable', 'perforated', 'modified atmosphere', 'vented'), ('tray', 'pulp', 'film'), ('vacuum',)),
     'fruit': (('tray', 'pulp', 'foam', 'clamshell'), ('perforated', 'breathable'), ('vacuum',)),
     'dairy': (('pet tray', 'lidding', 'vacuum', 'tray'), ('barrier', 'laminate', 'pouch'), ('breathable',)),
     'seafood': (('vacuum', 'barrier', 'laminate'), ('tray', 'pouch'), ('breathable',)),
@@ -69,6 +74,7 @@ def _score_material_components(
     temperature_sensitivity = float(food_profile.get('temperatureSensitivity', 5))
     moisture_sensitivity = float(food_profile.get('moistureSensitivity', 5))
     bulk_density = float(food_profile.get('bulkDensity', 5))
+    respiration = float(food_profile.get('respiration', 0))
 
     food_score = _feature_fit(material, {
         'Product fragility': clamp(42 + fragility * 6),
@@ -85,6 +91,30 @@ def _score_material_components(
     humidity_target = clamp(35 + humidity * 0.35 + moisture_sensitivity * 2.5)
     humidity_score = clamp(100 - abs(float(features.get('Moisture sensitivity', 60)) - humidity_target))
 
+    oxygen_target = clamp(35 + respiration * 0.8 + temperature_sensitivity * 0.8)
+    if product_type.lower() in {'fresh produce', 'fruit', 'meat', 'seafood'}:
+        oxygen_target += 10
+    if any(term in material_name for term in ('paperboard', 'pulp', 'carton', 'corrugate')):
+        oxygen_target -= 12
+    oxygen_score = clamp(100 - abs(float(features.get('Oxygen transmission rate (OTR)', 60)) - oxygen_target))
+
+    wvtr_target = clamp(30 + humidity * 0.4 + moisture_sensitivity * 2.0)
+    if product_type.lower() in {'fresh produce', 'fruit', 'dairy'}:
+        wvtr_target += 8
+    if any(term in material_name for term in ('barrier', 'laminate', 'vacuum', 'film', 'pouch')):
+        wvtr_target -= 10
+    wvtr_score = clamp(100 - abs(float(features.get('Water vapor transmission rate (WVTR)', 60)) - wvtr_target))
+
+    seal_target = 75 if any(term in material_name for term in ('pouch', 'laminate', 'film', 'vacuum', 'lidding', 'bag')) else 62
+    if product_type.lower() in {'dairy', 'seafood', 'meat', 'frozen food', 'beverage'}:
+        seal_target += 8
+    heat_seal_score = clamp(100 - abs(float(features.get('Heat sealability', 60)) - seal_target))
+
+    biodegradability_target = 78 if any(term in material_name for term in ('paperboard', 'pulp', 'carton', 'corrugate', 'cellulose')) else 58
+    if any(term in material_name for term in ('barrier', 'laminate', 'metalized', 'vacuum', 'pet')):
+        biodegradability_target -= 15
+    biodegradability_score = clamp(100 - abs(float(features.get('Biodegradability', 60)) - biodegradability_target))
+
     ph_score = float(features.get('Packaging material', 60))
     chemistry_load = max(0.0, 5.5 - ph, ph - 8.0)
     if chemistry_load:
@@ -100,6 +130,10 @@ def _score_material_components(
         'Temperature': temperature_score,
         'Humidity': humidity_score,
         'pH': ph_score,
+        'OTR': oxygen_score,
+        'WVTR': wvtr_score,
+        'Heat Sealability': heat_seal_score,
+        'Biodegradability': biodegradability_score,
     }
 
 
@@ -135,5 +169,16 @@ def rank_materials(
             'features': material.get('features', {}),
         })
 
-    ranked.sort(key=lambda item: item['score'], reverse=True)
+    ranked.sort(
+        key=lambda item: (
+            item['score'],
+            (item['components'].get('OTR', 0) + item['components'].get('WVTR', 0)) / 2,
+            item['features'].get('Packaging cost', 0),
+            item['features'].get(
+                'Sustainability/recyclability',
+                item['features'].get('Biodegradability', 0),
+            ),
+        ),
+        reverse=True,
+    )
     return ranked[:3]

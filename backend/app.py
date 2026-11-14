@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from backend.database import fetch_food_profiles, fetch_materials, save_recommendation
+from backend.database import fetch_food_profiles, fetch_materials
 from backend.recommender import rank_materials
 
 app = FastAPI(title='OptiPAck Recommendation API', version='1.0.0')
@@ -27,6 +27,7 @@ class RecommendationInput(BaseModel):
 
 GENERAL_PROFILES = {
     'Fresh produce': {'fragility': 7, 'respiration': 25, 'temperatureSensitivity': 7, 'handlingShock': 6, 'moistureSensitivity': 9, 'bulkDensity': 5},
+    'Vegetable': {'fragility': 7, 'respiration': 28, 'temperatureSensitivity': 8, 'handlingShock': 6, 'moistureSensitivity': 10, 'bulkDensity': 5},
     'Fruit': {'fragility': 7, 'respiration': 20, 'temperatureSensitivity': 7, 'handlingShock': 7, 'moistureSensitivity': 8, 'bulkDensity': 6},
     'Dairy': {'fragility': 6, 'respiration': 0, 'temperatureSensitivity': 8, 'handlingShock': 5, 'moistureSensitivity': 7, 'bulkDensity': 6},
     'Seafood': {'fragility': 7, 'respiration': 0, 'temperatureSensitivity': 10, 'handlingShock': 7, 'moistureSensitivity': 8, 'bulkDensity': 5},
@@ -42,7 +43,8 @@ GENERAL_PROFILES = {
 
 FOOD_NAME_HINTS = {
     'Fruit': ('apple', 'banana', 'berry', 'berries', 'citrus', 'grape', 'mango', 'melon', 'orange', 'pear', 'peach', 'plum', 'fruit'),
-    'Fresh produce': ('vegetable', 'vegetables', 'lettuce', 'spinach', 'cabbage', 'broccoli', 'carrot', 'cucumber', 'onion', 'pepper', 'tomato', 'potato', 'mushroom', 'greens'),
+    'Vegetable': ('vegetable', 'vegetables', 'lettuce', 'spinach', 'cabbage', 'broccoli', 'carrot', 'cucumber', 'onion', 'pepper', 'tomato', 'potato', 'mushroom', 'greens', 'asparagus', 'cauliflower', 'peas', 'beans'),
+    'Fresh produce': ('produce', 'fresh produce', 'salad', 'herbs', 'green beans', 'cucumber', 'tomato', 'avocado'),
     'Dairy': ('milk', 'cheese', 'yogurt', ' yoghurt', 'cream', 'butter'),
     'Seafood': ('fish', 'salmon', 'tuna', 'shrimp', 'prawn', 'crab', 'lobster', 'shellfish', 'seafood'),
     'Meat': ('beef', 'chicken', 'pork', 'lamb', 'turkey', 'duck', 'meat', 'sausage'),
@@ -131,31 +133,6 @@ def recommend(payload: RecommendationInput) -> dict:
         'top3': ranked,
         'summary': f"{winner['details']} This recommendation was optimized for {payload.foodName.lower()} under {profile['productType'].lower()} conditions at {payload.temperature:g} C and {payload.humidity}% humidity.",
     }
-
-
-@app.post('/save-record')
-def save_record(payload: dict) -> dict:
-    record = {
-        'foodName': payload.get('foodName', 'Custom product'),
-        'productType': payload.get('productType', 'Other'),
-        'temperature': float(payload.get('temperature', 20)),
-        'phMin': float(payload.get('ph', 0)) - 0.5,
-        'phMax': float(payload.get('ph', 0)) + 0.5,
-        'humidityRange': [max(10, int(payload.get('humidity', 0)) - 8), min(100, int(payload.get('humidity', 0)) + 8)],
-        'fragility': payload.get('profile', {}).get('fragility', 5),
-        'respiration': payload.get('profile', {}).get('respiration', 10),
-        'temperatureSensitivity': payload.get('profile', {}).get('temperatureSensitivity', 5),
-        'handlingShock': payload.get('profile', {}).get('handlingShock', 5),
-        'moistureSensitivity': payload.get('profile', {}).get('moistureSensitivity', 6),
-        'bulkDensity': payload.get('profile', {}).get('bulkDensity', 5),
-        'materialName': payload.get('materialName', ''),
-        'materialDetails': payload.get('materialDetails', ''),
-        'materialColor': payload.get('color', '#67b66d'),
-        'materialFeatures': payload.get('features', {}),
-        'packagingScore': float(payload.get('packagingScore', 0)),
-        'scoreComponents': payload.get('scoreComponents', {}),
-    }
-    return save_recommendation(record)
 
 
 if __name__ == '__main__':

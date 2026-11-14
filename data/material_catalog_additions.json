@@ -1,0 +1,162 @@
+{
+  "score_keys": [
+    "product_fragility_compatibility",
+    "product_dimensions_compatibility",
+    "required_cushioning",
+    "material_suitability",
+    "box_strength",
+    "transportation_risk_suitability",
+    "moisture_resistance",
+    "temperature_resistance",
+    "handling_shock_resistance",
+    "packaging_cost",
+    "sustainability_recyclability",
+    "damage_risk_performance",
+    "packaging_dimensions_compatibility",
+    "otr_barrier",
+    "wvtr_barrier",
+    "heat_sealability",
+    "biodegradability"
+  ],
+  "score_profiles": {
+    "flexible_plastic": [68, 84, 55, 78, 64, 70, 88, 82, 64, 82, 42, 75, 82, 76, 80, 90, 26],
+    "rigid_plastic": [85, 85, 68, 88, 92, 86, 86, 82, 86, 64, 48, 84, 86, 80, 78, 78, 18],
+    "paper": [48, 75, 58, 58, 52, 60, 35, 42, 52, 88, 80, 55, 72, 22, 25, 15, 82],
+    "paperboard": [60, 84, 78, 72, 86, 82, 48, 55, 82, 82, 82, 72, 86, 24, 28, 35, 78],
+    "metal": [88, 80, 48, 95, 96, 92, 98, 98, 90, 42, 66, 92, 88, 98, 98, 40, 0],
+    "glass": [90, 86, 58, 90, 95, 75, 98, 92, 62, 38, 86, 88, 80, 98, 98, 0, 0],
+    "bioplastic": [65, 82, 62, 72, 65, 68, 60, 58, 64, 58, 82, 70, 78, 50, 48, 72, 78],
+    "natural_polymer": [48, 68, 55, 58, 48, 50, 45, 48, 50, 75, 83, 52, 68, 24, 30, 35, 91],
+    "protein": [48, 70, 55, 60, 48, 52, 42, 45, 50, 62, 78, 55, 68, 26, 30, 20, 88],
+    "lipid": [55, 68, 50, 68, 50, 55, 90, 65, 55, 68, 68, 70, 62, 85, 80, 35, 72],
+    "composite": [80, 85, 68, 90, 90, 85, 90, 84, 84, 48, 45, 84, 84, 90, 90, 82, 34],
+    "protective": [90, 82, 96, 78, 90, 90, 60, 72, 96, 62, 40, 86, 88, 18, 18, 28, 12],
+    "edible": [42, 52, 35, 48, 25, 38, 32, 38, 30, 50, 90, 35, 50, 18, 20, 18, 94],
+    "active": [75, 76, 62, 84, 82, 80, 88, 82, 74, 45, 50, 78, 75, 88, 88, 68, 32],
+    "intelligent": [62, 70, 40, 72, 56, 52, 45, 55, 48, 30, 55, 72, 78, 68, 70, 50, 20]
+  },
+  "references": {
+    "food_contact": [
+      {
+        "title": "Food Contact Substances",
+        "url": "https://www.fda.gov/food/packaging-food-contact-substances-fcs"
+      },
+      {
+        "title": "Food Contact Materials",
+        "url": "https://food.ec.europa.eu/food-safety/chemical-safety/food-contact-materials_en"
+      }
+    ],
+    "plastic_regulations": [
+      {
+        "title": "21 CFR Part 177 — Indirect Food Additives: Polymers",
+        "url": "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-177"
+      }
+    ],
+    "paper_regulations": [
+      {
+        "title": "21 CFR Part 176 — Indirect Food Additives: Paper and Paperboard Components",
+        "url": "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-B/part-176"
+      }
+    ],
+    "otr_test_method": [
+      {
+        "title": "ASTM D3985 — Oxygen Gas Transmission Rate Through Plastic Film and Sheeting",
+        "url": "https://www.astm.org/d3985-17.html"
+      }
+    ],
+    "wvtr_test_method": [
+      {
+        "title": "ASTM F1249 — Water Vapor Transmission Rate Through Plastic Film and Sheeting",
+        "url": "https://www.astm.org/f1249-20.html"
+      }
+    ],
+    "recycling": [
+      {
+        "title": "How Do I Recycle Common Recyclables?",
+        "url": "https://www.epa.gov/recycle/how-do-i-recycle-common-recyclables"
+      }
+    ]
+  },
+  "materials": [
+    {"material_id":"PKG-0014","material_name":"LDPE","material_category":"Conventional Plastics","composition":"Low-density polyethylene","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0015","material_name":"LLDPE","material_category":"Conventional Plastics","composition":"Linear low-density polyethylene","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0016","material_name":"HDPE","material_category":"Conventional Plastics","composition":"High-density polyethylene","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0017","material_name":"mLLDPE","material_category":"Conventional Plastics","composition":"Metallocene linear low-density polyethylene","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0018","material_name":"PP homopolymer","material_category":"Conventional Plastics","composition":"Polypropylene homopolymer","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0019","material_name":"PP copolymer","material_category":"Conventional Plastics","composition":"Polypropylene copolymer","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0020","material_name":"BOPP","material_category":"Conventional Plastics","composition":"Biaxially oriented polypropylene film","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0021","material_name":"CPP","material_category":"Conventional Plastics","composition":"Cast polypropylene film","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0022","material_name":"PET","material_category":"Conventional Plastics","composition":"Polyethylene terephthalate","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0023","material_name":"APET","material_category":"Conventional Plastics","composition":"Amorphous polyethylene terephthalate","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0024","material_name":"CPET","material_category":"Conventional Plastics","composition":"Crystalline polyethylene terephthalate","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0025","material_name":"rPET","material_category":"Conventional Plastics","composition":"Recycled polyethylene terephthalate; food-contact suitability depends on approved process and grade","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0026","material_name":"PVC","material_category":"Conventional Plastics","composition":"Polyvinyl chloride","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0027","material_name":"PS","material_category":"Conventional Plastics","composition":"Polystyrene","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0028","material_name":"HIPS","material_category":"Conventional Plastics","composition":"High-impact polystyrene","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0029","material_name":"PA6 (Nylon 6)","material_category":"Conventional Plastics","composition":"Polyamide 6","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0030","material_name":"PA66 (Nylon 66)","material_category":"Conventional Plastics","composition":"Polyamide 66","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0031","material_name":"PC","material_category":"Conventional Plastics","composition":"Polycarbonate","development_status":"Commercial","score_profile":"rigid_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0032","material_name":"EVOH","material_category":"Conventional Plastics","composition":"Ethylene-vinyl alcohol copolymer","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0033","material_name":"PVDC","material_category":"Conventional Plastics","composition":"Polyvinylidene chloride","development_status":"Commercial","score_profile":"flexible_plastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0034","material_name":"Kraft paper","material_category":"Paper","composition":"Kraft paper made from chemical pulp","development_status":"Commercial","score_profile":"paper","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0035","material_name":"Glassine","material_category":"Paper","composition":"Dense, smooth, calendered cellulose paper","development_status":"Commercial","score_profile":"paper","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0036","material_name":"Greaseproof paper","material_category":"Paper","composition":"Paper with reduced grease penetration","development_status":"Commercial","score_profile":"paper","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0037","material_name":"Parchment paper","material_category":"Paper","composition":"Grease-resistant treated cellulose paper","development_status":"Commercial","score_profile":"paper","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0038","material_name":"Coated paper","material_category":"Paper","composition":"Paper with a functional polymer, mineral, or barrier coating","development_status":"Commercial","score_profile":"paper","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0039","material_name":"Folding carton board","material_category":"Paperboard","composition":"Multi-ply paperboard for folding cartons","development_status":"Commercial","score_profile":"paperboard","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0040","material_name":"Solid bleached board (SBB)","material_category":"Paperboard","composition":"Solid bleached paperboard","development_status":"Commercial","score_profile":"paperboard","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0041","material_name":"Solid unbleached board (SUB)","material_category":"Paperboard","composition":"Solid unbleached paperboard","development_status":"Commercial","score_profile":"paperboard","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0042","material_name":"Corrugated board","material_category":"Paperboard","composition":"Fluted paper medium between linerboards","development_status":"Commercial","score_profile":"paperboard","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0043","material_name":"Aluminium foil","material_category":"Metals","composition":"Rolled aluminium foil; alloy and temper are grade-dependent","development_status":"Commercial","score_profile":"metal","source_reference_ids":["food_contact","recycling","otr_test_method","wvtr_test_method"]},
+    {"material_id":"PKG-0044","material_name":"Tinplate","material_category":"Metals","composition":"Tin-coated low-carbon steel sheet","development_status":"Commercial","score_profile":"metal","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0045","material_name":"Food-grade steel","material_category":"Metals","composition":"Steel packaging with a food-contact coating or lining as required","development_status":"Commercial","score_profile":"metal","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0046","material_name":"Metallized film","material_category":"Metals","composition":"Polymer film with a thin deposited metal layer","development_status":"Commercial","score_profile":"composite","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0047","material_name":"Soda-lime glass","material_category":"Glass","composition":"Soda-lime silicate glass","development_status":"Commercial","score_profile":"glass","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0048","material_name":"Borosilicate glass","material_category":"Glass","composition":"Borosilicate silicate glass","development_status":"Commercial","score_profile":"glass","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0049","material_name":"Amber glass","material_category":"Glass","composition":"Amber-colored soda-lime glass","development_status":"Commercial","score_profile":"glass","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0050","material_name":"Colored glass","material_category":"Glass","composition":"Colored glass; composition and cullet compatibility vary by color","development_status":"Commercial","score_profile":"glass","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0051","material_name":"PLA","material_category":"Bioplastics","composition":"Polylactic acid","development_status":"Commercial","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0052","material_name":"PHA","material_category":"Bioplastics","composition":"Polyhydroxyalkanoates","development_status":"Emerging","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0053","material_name":"PHB","material_category":"Bioplastics","composition":"Poly(3-hydroxybutyrate)","development_status":"Emerging","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0054","material_name":"PHBV","material_category":"Bioplastics","composition":"Poly(3-hydroxybutyrate-co-3-hydroxyvalerate)","development_status":"Emerging","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0055","material_name":"PBS","material_category":"Bioplastics","composition":"Polybutylene succinate","development_status":"Commercial","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0056","material_name":"PBAT","material_category":"Bioplastics","composition":"Polybutylene adipate terephthalate","development_status":"Commercial","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0057","material_name":"Thermoplastic starch (TPS)","material_category":"Bioplastics","composition":"Plasticized thermoplastic starch","development_status":"Commercial","score_profile":"bioplastic","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0058","material_name":"Starch film","material_category":"Natural Polymers","composition":"Starch-based film or coating","development_status":"Commercial","score_profile":"natural_polymer","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0059","material_name":"Cellulose film","material_category":"Natural Polymers","composition":"Regenerated cellulose film","development_status":"Commercial","score_profile":"natural_polymer","source_reference_ids":["food_contact","recycling"]},
+    {"material_id":"PKG-0060","material_name":"Chitosan","material_category":"Natural Polymers","composition":"Chitin-derived chitosan film or coating","development_status":"Emerging","score_profile":"natural_polymer","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0061","material_name":"Alginate","material_category":"Natural Polymers","composition":"Alginate film or coating","development_status":"Commercial","score_profile":"natural_polymer","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0062","material_name":"Pectin","material_category":"Natural Polymers","composition":"Pectin film or coating","development_status":"Commercial","score_profile":"natural_polymer","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0063","material_name":"Gelatin film","material_category":"Protein Materials","composition":"Gelatin-based film or coating","development_status":"Commercial","score_profile":"protein","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0064","material_name":"Casein film","material_category":"Protein Materials","composition":"Casein-based film or coating","development_status":"Emerging","score_profile":"protein","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0065","material_name":"Whey protein film","material_category":"Protein Materials","composition":"Whey protein isolate or concentrate film","development_status":"Commercial","score_profile":"protein","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0066","material_name":"Soy protein film","material_category":"Protein Materials","composition":"Soy protein-based film or coating","development_status":"Emerging","score_profile":"protein","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0067","material_name":"Zein film","material_category":"Protein Materials","composition":"Corn zein-based film or coating","development_status":"Emerging","score_profile":"protein","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0068","material_name":"Gluten film","material_category":"Protein Materials","composition":"Wheat gluten-based film or coating","development_status":"Emerging","score_profile":"protein","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0069","material_name":"Beeswax coating","material_category":"Lipid Materials","composition":"Beeswax-based lipid coating","development_status":"Commercial","score_profile":"lipid","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0070","material_name":"Carnauba wax coating","material_category":"Lipid Materials","composition":"Carnauba wax-based coating","development_status":"Commercial","score_profile":"lipid","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0071","material_name":"Shellac coating","material_category":"Lipid Materials","composition":"Shellac-based food coating","development_status":"Commercial","score_profile":"lipid","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0072","material_name":"Fatty-acid coating","material_category":"Lipid Materials","composition":"Fatty-acid or fatty-acid-derivative barrier coating","development_status":"Commercial","score_profile":"lipid","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0073","material_name":"Lipid coating","material_category":"Lipid Materials","composition":"Food-grade lipid blend or emulsion coating","development_status":"Commercial","score_profile":"lipid","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0074","material_name":"Polymer blend","material_category":"Composite Materials","composition":"Blend of two or more polymers; composition is formulation-specific","development_status":"Commercial","score_profile":"composite","source_reference_ids":["food_contact","plastic_regulations","otr_test_method","wvtr_test_method"]},
+    {"material_id":"PKG-0075","material_name":"Fibre-reinforced polymer composite","material_category":"Composite Materials","composition":"Polymer matrix reinforced with natural or synthetic fibres","development_status":"Commercial","score_profile":"composite","source_reference_ids":["food_contact","plastic_regulations"]},
+    {"material_id":"PKG-0076","material_name":"Multilayer laminate","material_category":"Composite Materials","composition":"Bonded polymer, paper, foil, or coated layers; construction is grade-specific","development_status":"Commercial","score_profile":"composite","source_reference_ids":["food_contact","plastic_regulations","paper_regulations","otr_test_method","wvtr_test_method","recycling"]},
+    {"material_id":"PKG-0077","material_name":"Paper-plastic laminate","material_category":"Composite Materials","composition":"Paper or paperboard laminated with polymer film or coating","development_status":"Commercial","score_profile":"composite","source_reference_ids":["food_contact","plastic_regulations","paper_regulations","recycling"]},
+    {"material_id":"PKG-0078","material_name":"EPS cushioning","material_category":"Protective Materials","composition":"Expanded polystyrene protective foam","development_status":"Commercial","score_profile":"protective","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0079","material_name":"EPE cushioning","material_category":"Protective Materials","composition":"Expanded polyethylene protective foam","development_status":"Commercial","score_profile":"protective","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0080","material_name":"EPP cushioning","material_category":"Protective Materials","composition":"Expanded polypropylene protective foam","development_status":"Commercial","score_profile":"protective","source_reference_ids":["food_contact","plastic_regulations","recycling"]},
+    {"material_id":"PKG-0081","material_name":"PU foam","material_category":"Protective Materials","composition":"Polyurethane protective foam","development_status":"Commercial","score_profile":"protective","source_reference_ids":["food_contact","plastic_regulations"]},
+    {"material_id":"PKG-0082","material_name":"EVA cushioning","material_category":"Protective Materials","composition":"Ethylene-vinyl acetate cushioning foam","development_status":"Commercial","score_profile":"protective","source_reference_ids":["food_contact","plastic_regulations"]},
+    {"material_id":"PKG-0083","material_name":"Paper honeycomb","material_category":"Protective Materials","composition":"Expanded paper honeycomb cushioning structure","development_status":"Commercial","score_profile":"protective","source_reference_ids":["food_contact","paper_regulations","recycling"]},
+    {"material_id":"PKG-0084","material_name":"Edible films","material_category":"Edible Packaging","composition":"Edible film based on food-grade polysaccharides, proteins, or lipids","development_status":"Emerging","score_profile":"edible","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0085","material_name":"Edible coatings","material_category":"Edible Packaging","composition":"Edible coating applied directly to a food surface","development_status":"Commercial","score_profile":"edible","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0086","material_name":"Edible capsules","material_category":"Edible Packaging","composition":"Edible encapsulation or sachet material","development_status":"Emerging","score_profile":"edible","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0087","material_name":"Edible wraps","material_category":"Edible Packaging","composition":"Flexible edible wrap or sheet","development_status":"Emerging","score_profile":"edible","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0088","material_name":"Oxygen-scavenging packaging","material_category":"Active Packaging","composition":"Oxygen-scavenging component incorporated in a package or sachet","development_status":"Commercial","score_profile":"active","source_reference_ids":["food_contact","plastic_regulations"]},
+    {"material_id":"PKG-0089","material_name":"Antimicrobial packaging","material_category":"Active Packaging","composition":"Antimicrobial agent or surface incorporated into packaging; approval is application-specific","development_status":"Commercial","score_profile":"active","source_reference_ids":["food_contact","plastic_regulations"]},
+    {"material_id":"PKG-0090","material_name":"Moisture-absorbing packaging","material_category":"Active Packaging","composition":"Moisture absorber, desiccant, or absorbent pad system","development_status":"Commercial","score_profile":"active","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0091","material_name":"Freshness indicator","material_category":"Intelligent Packaging","composition":"Indicator responding to freshness-related chemical or microbial changes","development_status":"Commercial","score_profile":"intelligent","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0092","material_name":"Time-temperature indicator","material_category":"Intelligent Packaging","composition":"Indicator recording cumulative time-temperature exposure","development_status":"Commercial","score_profile":"intelligent","source_reference_ids":["food_contact"]},
+    {"material_id":"PKG-0093","material_name":"Packaging sensor","material_category":"Intelligent Packaging","composition":"Sensor or sensor label for package or product condition monitoring","development_status":"Commercial","score_profile":"intelligent","source_reference_ids":["food_contact"]}
+  ]
+}

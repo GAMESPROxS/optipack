@@ -17,7 +17,11 @@
       "Packaging cost": 78,
       "Sustainability/recyclability": 77,
       "Estimated damage risk": 76,
-      "Packaging dimensions": 83
+      "Packaging dimensions": 83,
+      "Oxygen transmission rate (OTR)": 84,
+      "Water vapor transmission rate (WVTR)": 88,
+      "Heat sealability": 72,
+      "Biodegradability": 76
     }
   },
   {
@@ -38,7 +42,11 @@
       "Packaging cost": 64,
       "Sustainability/recyclability": 72,
       "Estimated damage risk": 81,
-      "Packaging dimensions": 90
+      "Packaging dimensions": 90,
+      "Oxygen transmission rate (OTR)": 68,
+      "Water vapor transmission rate (WVTR)": 62,
+      "Heat sealability": 82,
+      "Biodegradability": 58
     }
   },
   {
@@ -59,7 +67,11 @@
       "Packaging cost": 69,
       "Sustainability/recyclability": 60,
       "Estimated damage risk": 77,
-      "Packaging dimensions": 82
+      "Packaging dimensions": 82,
+      "Oxygen transmission rate (OTR)": 80,
+      "Water vapor transmission rate (WVTR)": 74,
+      "Heat sealability": 89,
+      "Biodegradability": 46
     }
   },
   {

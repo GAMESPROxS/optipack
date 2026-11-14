@@ -308,7 +308,7 @@
           ['Moisture handling', scoring.find(([key]) => key === 'Moisture sensitivity')?.[1] || 0]
         ];
 
-        const performance = scoring.slice(0, 6).map(([key, value]) => [key, value]);
+        const performance = scoring.slice(0, 16).map(([key, value]) => [key, value]);
 
         document.getElementById('materialName').textContent = selected.name;
         document.getElementById('materialDescription').textContent = selected.details || 'No extra notes are available.';

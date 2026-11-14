@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Product traceability | OptiPAck</title>
+  <style>
+    :root {
+      --bg: #f5f7f2;
+      --panel: #fff;
+      --line: #dfe7dc;
+      --text: #16362d;
+      --muted: #5d736a;
+      --green: #235845;
+      --green-2: #71b06a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    .page { max-width: 760px; margin: 32px auto; padding: 0 16px 40px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .brand { font-size: 24px; font-weight: 800; letter-spacing: -0.06em; }
+    .brand span { color: var(--green-2); }
+    a { color: var(--green); font-weight: 700; }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 16px 40px rgba(20, 42, 34, 0.08);
+    }
+    .eyebrow { color: var(--green-2); font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+    h1 { margin: 8px 0; font-size: clamp(26px, 5vw, 36px); letter-spacing: -.05em; }
+    .status { color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }
+    dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin: 24px 0 0; }
+    .field { padding: 14px; background: #f8faf7; border: 1px solid var(--line); border-radius: 12px; min-width: 0; }
+    dt { color: var(--muted); font-size: 12px; margin-bottom: 7px; }
+    dd { margin: 0; font-weight: 700; overflow-wrap: anywhere; }
+    h2 { margin: 26px 0 10px; font-size: 17px; }
+    .table-wrap { overflow-x: auto; margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    #traitTable { min-width: 620px; }
+    th, td { padding: 13px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-size: 12px; }
+    td { font-weight: 700; }
+    th:last-child, td:last-child { text-align: right; white-space: nowrap; }
+    @media (max-width: 560px) {
+      .page { margin: 16px auto; padding: 0 12px 28px; }
+      .panel { padding: 16px; }
+      .topbar { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <div class="brand"><span>Opti</span>PAck</div>
+      <a href="index.html">Back to app</a>
+    </header>
+    <section class="panel" aria-live="polite">
+      <div class="eyebrow">Product and packaging history</div>
+      <h1 id="recordTitle">Traceability record</h1>
+      <p id="recordStatus" class="status">Loading saved record...</p>
+      <dl id="recordFields"></dl>
+      <h2>Top 3 recommended materials</h2>
+      <p id="materialsStatus" class="status" hidden></p>
+      <div id="tableWrap" class="table-wrap" hidden>
+        <table>
+          <thead>
+            <tr><th>Rank</th><th>Material</th><th>Score / 100</th></tr>
+          </thead>
+          <tbody id="materialRows"></tbody>
+        </table>
+      </div>
+      <h2>Trait scores for each material</h2>
+      <p id="traitsStatus" class="status" hidden></p>
+      <div id="traitsTableWrap" class="table-wrap" hidden>
+        <table id="traitTable">
+          <thead id="traitHeaders"></thead>
+          <tbody id="traitRows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <script>
+    function addField(container, label, value) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'field';
+      const term = document.createElement('dt');
+      term.textContent = label;
+      const description = document.createElement('dd');
+      description.textContent = value;
+      wrapper.append(term, description);
+      container.append(wrapper);
+    }
+
+    function renderTraitScores(materials, bestFeatures) {
+      const featureSets = materials.map((material, index) => {
+        const features = material.features && typeof material.features === 'object'
+          ? material.features
+          : {};
+        return index === 0 && Object.keys(features).length === 0 ? bestFeatures : features;
+      });
+      const traits = [...new Set(featureSets.flatMap((features) => Object.keys(features)))];
+      if (!traits.length) {
+        const status = document.getElementById('traitsStatus');
+        status.textContent = 'Trait scores are unavailable for this record.';
+        status.hidden = false;
+        return;
+      }
+
+      const header = document.createElement('tr');
+      const traitHeader = document.createElement('th');
+      traitHeader.textContent = 'Trait';
+      header.append(traitHeader);
+      materials.forEach((material, index) => {
+        const cell = document.createElement('th');
+        cell.textContent = `#${index + 1} ${material.name}`;
+        header.append(cell);
+      });
+      document.getElementById('traitHeaders').replaceChildren(header);
+
+      const rows = document.getElementById('traitRows');
+      for (const trait of traits) {
+        const row = document.createElement('tr');
+        const label = document.createElement('td');
+        label.textContent = trait;
+        row.append(label);
+        featureSets.forEach((features) => {
+          const score = document.createElement('td');
+          const value = features[trait];
+          score.textContent = Number.isFinite(value) ? `${Math.round(value)} / 100` : 'Not recorded';
+          row.append(score);
+        });
+        rows.append(row);
+      }
+      document.getElementById('traitsTableWrap').hidden = false;
+    }
+
+    async function loadTraceabilityRecord() {
+      const recordId = new URLSearchParams(window.location.search).get('id');
+      const status = document.getElementById('recordStatus');
+      if (!recordId) {
+        status.textContent = 'No traceability record ID was provided.';
+        return;
+      }
+
+      const baseUrl = window.location.protocol === 'file:' ? 'http://localhost:3000' : window.location.origin;
+      try {
+        const response = await fetch(`${baseUrl}/api/traceability/${encodeURIComponent(recordId)}`);
+        const record = await response.json();
+        if (!response.ok) {
+          throw new Error(record.error || 'Unable to load the traceability record.');
+        }
+
+        document.getElementById('recordTitle').textContent = record.foodName;
+        status.textContent = `Record ID: ${record.id}`;
+        const fields = document.getElementById('recordFields');
+        addField(fields, 'Product type', record.productType);
+        addField(fields, 'Storage temperature', `${record.temperature} °C`);
+        addField(fields, 'Storage humidity', `${record.humidity}%`);
+        addField(fields, 'Product pH', String(record.ph));
+        addField(fields, 'Recommended packaging', record.materialName);
+        addField(fields, 'Recommendation match', `${Number(record.recommendationScore).toFixed(1)} / 100`);
+        addField(fields, 'Record created', new Date(record.createdAt).toLocaleString());
+
+        const materials = Array.isArray(record.topMaterials) ? record.topMaterials : [];
+        const materialStatus = document.getElementById('materialsStatus');
+        if (materials.length !== 3) {
+          materialStatus.textContent = 'Ranked materials are unavailable for this record.';
+          materialStatus.hidden = false;
+          return;
+        }
+
+        const rows = document.getElementById('materialRows');
+        materials.forEach((material, index) => {
+          const row = document.createElement('tr');
+          const rank = document.createElement('td');
+          const name = document.createElement('td');
+          const score = document.createElement('td');
+          rank.textContent = String(index + 1);
+          name.textContent = material.name;
+          score.textContent = `${Number(material.score).toFixed(1)} / 100`;
+          row.append(rank, name, score);
+          rows.append(row);
+        });
+        document.getElementById('tableWrap').hidden = false;
+        renderTraitScores(materials, record.materialFeatures || {});
+      } catch (error) {
+        console.error('Unable to load traceability record.', error);
+        status.textContent = error.message || 'Unable to load the traceability record.';
+      }
+    }
+
+    loadTraceabilityRecord();
+  </script>
+</body>
+</html>
